@@ -1,4 +1,5 @@
 package com.techacademy.controller;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import com.techacademy.constants.ErrorKinds;
 import com.techacademy.constants.ErrorMessage;
@@ -45,7 +47,14 @@ public class EmployeeController {
     @GetMapping(value = "/{code}/")
     public String detail(@PathVariable String code, Model model) {
 
-        model.addAttribute("employee", employeeService.findByCode(code));
+
+        Employee employee = employeeService.findByCode(code);
+        if(Objects.isNull(employee)) {
+            //入れ違いで削除されて表示不可なので従業員一覧にリダイレクト
+            return "redirect:/employees/";
+        }
+
+        model.addAttribute("employee", employee);
         return "employees/detail";
     }
 
@@ -114,9 +123,33 @@ public class EmployeeController {
     }
 
     // 従業員更新画面
-    @PostMapping(value = "/{code}/update")
-    public String edit(@ModelAttribute Employee employee) {
+    @GetMapping(value = "/{code}/update")
+    public String update(@PathVariable String code, Model model)  {
+        Employee employee = employeeService.findByCode(code);
+        if(Objects.isNull(employee)) {
+            //入れ違いで削除されて更新不可なので従業員一覧にリダイレクト
+            return "redirect:/employees/";
+        }
+        model.addAttribute("employee", employee);
+            return "/employees/update";
+        }
 
-        return "employees/update";
+    // 従業員更新処理
+    @PostMapping(value = "/{code}/update")
+    public String update(@Validated Employee employee, BindingResult res, Model model) {
+        // 入力チェック
+        if (res.hasErrors()) {
+            return "employees/edit";
+        }
+
+        ErrorKinds result = employeeService.update(employee);
+
+        if (ErrorMessage.contains(result)) {
+            model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+            return "employees/edit";
+        }
+
+        return "redirect:/employees/";
     }
 }
+

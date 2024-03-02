@@ -18,6 +18,11 @@ public enum ErrorKinds {
     LOGINCHECK_ERROR,
     // 日付チェックエラー
     DATECHECK_ERROR,
+    // 削除済み※
+    ALREADY_DELETED,
+    // 登録済の日報
+    ALREADY_REGIST_REPORT,
+
     // チェックOK
     CHECK_OK,
     // 正常終了

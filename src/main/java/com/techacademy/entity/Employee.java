@@ -2,23 +2,31 @@
 package com.techacademy.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.validator.constraints.Length;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 @Data
 @Entity
 @Table(name = "employees")
-@SQLRestriction("delete_flg = false")
+
 public class Employee {
 
     public static enum Role {
@@ -37,13 +45,11 @@ public class Employee {
 
     // ID
     @Id
-    @Column(length = 10)
     @NotEmpty
     @Length(max = 10)
     private String code;
 
     // 名前
-    @Column(length = 20, nullable = false)
     @NotEmpty
     @Length(max = 20)
     private String name;
@@ -54,19 +60,21 @@ public class Employee {
     private Role role;
 
     // パスワード
-    @Column(length = 255, nullable = false)
     private String password;
 
     // 削除フラグ(論理削除を行うため)
-    @Column(columnDefinition="TINYINT", nullable = false)
+
     private boolean deleteFlg;
 
     // 登録日時
-    @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;
 
     // 更新日時
-    @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updatedAt;
 
+    //日報情報
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Report> reportList;
 }

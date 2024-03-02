@@ -32,6 +32,13 @@ public class ErrorMessage {
                     new ArrayList<String>(Arrays.asList("deleteError", "ログイン中の従業員を削除することは出来ません")));
             // 同一日付チェック用エラーメッセージ
             put(ErrorKinds.DATECHECK_ERROR, new ArrayList<String>(Arrays.asList("reportDateError", "既に登録されている日付です")));
+            //
+            put(ErrorKinds.ALREADY_DELETED, new ArrayList<String>(Arrays.asList("alreadyDeleted", "このデータは既に削除されました")));
+            // 登録済の日報
+            put(ErrorKinds.ALREADY_REGIST_REPORT,
+                    new ArrayList<String>(Arrays.asList("reportDateError", "既に登録されている日付です")));
+
+
         }
     };
 
