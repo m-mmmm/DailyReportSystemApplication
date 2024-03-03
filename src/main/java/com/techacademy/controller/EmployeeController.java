@@ -130,8 +130,9 @@ public class EmployeeController {
             //入れ違いで削除されて更新不可なので従業員一覧にリダイレクト
             return "redirect:/employees/";
         }
+        model.addAttribute("code",code);
         model.addAttribute("employee", employee);
-            return "/employees/update";
+            return "employees/edit";
         }
 
     // 従業員更新処理
@@ -149,7 +150,7 @@ public class EmployeeController {
             return "employees/edit";
         }
 
-        return "redirect:/employees/";
+        return "redirect:/employees";
     }
 }
 
