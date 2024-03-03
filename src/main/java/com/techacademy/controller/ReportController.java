@@ -171,10 +171,11 @@ public class ReportController {
      * @return viewの名称
      */
     @PostMapping(value = "/{id}/update")
-    public String update(@Validated Report report, BindingResult res, Model model) {
+    public String update(@Validated Report report, BindingResult res, Model model,@PathVariable Integer id) {
 
         // 入力チェック
         if (res.hasErrors()) {
+            model.addAttribute("id",id);
             return "/reports/edit";
         }
 
