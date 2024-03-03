@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +26,7 @@ import jakarta.validation.constraints.Pattern;
 @Data
 @Entity
 @Table(name = "employees")
+@SQLRestriction("delete_flg = false")
 
 public class Employee {
 

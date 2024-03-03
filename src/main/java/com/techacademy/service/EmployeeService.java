@@ -127,6 +127,7 @@ public class EmployeeService {
         employee.setUpdatedAt(now);
         employee.setDeleteFlg(true);
         }
+        employeeRepository.save(employee);
         return ErrorKinds.SUCCESS;
 
     }
